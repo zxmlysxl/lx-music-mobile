@@ -1,11 +1,11 @@
 import { memo, useState, useEffect } from 'react'
-import { StyleSheet, View, InteractionManager } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 // import { gzip, ungzip } from 'pako'
 
 import SubTitle from '../../components/SubTitle'
 import Button from '../../components/Button'
-import { toast, resetNotificationPermissionCheck, confirmDialog } from '@/utils/tools'
+import { toast, resetNotificationPermissionCheck, confirmDialog, resetIgnoringBatteryOptimizationCheck } from '@/utils/tools'
 import { getAppCacheSize, clearAppCache } from '@/utils/nativeModules/cache'
 import { sizeFormate } from '@/utils'
 import { useI18n } from '@/lang'
@@ -34,17 +34,16 @@ export default memo(() => {
     }).then(confirm => {
       if (!confirm) return
       setCleaning(true)
-      void InteractionManager.runAfterInteractions(() => {
-        void Promise.all([
-          clearAppCache(),
-          clearMusicUrl(),
-          resetNotificationPermissionCheck(),
-        ]).then(() => {
-          toast(t('setting_other_cache_clear_success_tip'))
-        }).finally(() => {
-          handleGetAppCacheSize()
-          setCleaning(false)
-        })
+      void Promise.all([
+        clearAppCache(),
+        clearMusicUrl(),
+        resetNotificationPermissionCheck(),
+        resetIgnoringBatteryOptimizationCheck(),
+      ]).then(() => {
+        toast(t('setting_other_cache_clear_success_tip'))
+      }).finally(() => {
+        handleGetAppCacheSize()
+        setCleaning(false)
       })
     })
   }

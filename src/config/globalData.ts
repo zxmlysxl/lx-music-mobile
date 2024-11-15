@@ -45,12 +45,15 @@ global.lx = {
   // syncKeyInfo: {},
 
   isEnableSyncLog: false,
+  isEnableUserApiLog: false,
 
   playerTrackId: '',
 
   gettingUrlId: '',
 
   qualityList: {},
+  apis: {},
+  apiInitPromise: [Promise.resolve(false), true, () => {}],
 
   jumpMyListPosition: false,
 

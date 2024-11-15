@@ -1,18 +1,24 @@
 module.exports = {
   upgrade: true,
   reject: [
-    // 'metro-react-native-babel-preset',
     '@types/react-native',
-    'metro-react-native-babel-preset',
-    'react-native',
+    'message2call',
     'react',
-  ]
+    'react-native',
+    'react-native-pager-view',
+    'react-native-navigation',
+  ],
+
+  // target: 'newest',
+  // filter: [
+  //   'react-native-navigation',
+  // ],
 
   // target: 'patch',
   // filter: [
-  //   'react-native',
   //   '@types/react-native',
   //   'react',
-  //   'metro-react-native-babel-preset',
+  //   'react-native',
+  //   '@react-native/metro-config',
   // ],
 }

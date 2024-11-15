@@ -47,6 +47,11 @@ declare global {
       'common.drawerLayoutPosition': 'left' | 'right'
 
       /**
+       * 启用首页滑动
+       */
+      'common.homePageScroll': boolean
+
+      /**
        * 是否显示返回按钮
        */
       'common.showBackBtn': boolean
@@ -55,6 +60,16 @@ declare global {
        * 是否显示退出按钮
        */
       'common.showExitBtn': boolean
+
+      /**
+       * 使用系统文件选择器
+       */
+      'common.useSystemFileSelector': boolean
+
+      /**
+       * 总是保留状态栏高度
+       */
+      'common.alwaysKeepStatusbarHeight': boolean
 
       /**
        * 主题id
@@ -77,9 +92,24 @@ declare global {
       'theme.hideBgDark': boolean
 
       /**
-           * 启动时自动播放歌曲
-           */
+       * 动态背景
+       */
+      'theme.dynamicBg': boolean
+
+      /**
+       * 字体阴影
+       */
+      'theme.fontShadow': boolean
+
+      /**
+       * 启动时自动播放歌曲
+       */
       'player.startupAutoPlay': boolean
+
+      /**
+       * 启动后打开歌曲详细界面
+       */
+      'player.startupPushPlayDetailScreen': boolean
 
       /**
        * 切歌模式
@@ -87,9 +117,9 @@ declare global {
       'player.togglePlayMethod': 'listLoop' | 'random' | 'list' | 'singleLoop' | 'none'
 
       /**
-       * 是否优先播放320k音质
+       * 优先播放的音质
        */
-      'player.isPlayHighQuality': boolean
+      'player.playQuality': LX.Quality
 
       /**
        * 启动软件时是否恢复上次播放进度

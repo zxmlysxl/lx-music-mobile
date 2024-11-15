@@ -103,7 +103,8 @@ export const handleImportListPart = async(listData: LX.ConfigFile.MyListInfoPart
     position: Math.max(position, -1),
   }).then(() => {
     toast(global.i18n.t('setting_backup_part_import_list_tip_success'))
-  }).catch(() => {
+  }).catch((err) => {
+    log.error(err)
     toast(global.i18n.t('setting_backup_part_import_list_tip_error'))
   })
 }
@@ -122,27 +123,34 @@ const importPlayList = async(path: string) => {
       await overwriteListMusics(LIST_IDS.DEFAULT, filterMusicList((configData.data as LX.List.MyDefaultListInfoFull).list.map(m => toNewMusicInfo(m))))
       break
     case 'playList':
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await importOldListData(configData.data)
       break
     case 'playList_v2':
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await importNewListData(configData.data)
       break
     case 'allData':
       // 兼容0.6.2及以前版本的列表数据
       if (configData.defaultList) await overwriteListMusics(LIST_IDS.DEFAULT, filterMusicList((configData.defaultList as LX.List.MyDefaultListInfoFull).list.map(m => toNewMusicInfo(m))))
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       else await importOldListData(configData.playList)
       break
     case 'allData_v2':
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await importNewListData(configData.playList)
       break
     case 'playListPart':
       configData.data.list = filterMusicList((configData.data as LX.ConfigFile.MyListInfoPart['data']).list.map(m => toNewMusicInfo(m)))
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       void handleImportListPart(configData.data)
       return true
     case 'playListPart_v2':
       configData.data.list = filterMusicList((configData.data as LX.ConfigFile.MyListInfoPart['data']).list).map(m => fixNewMusicInfoQuality(m))
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       void handleImportListPart(configData.data)
       return true
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     default: showImportTip(configData.type)
   }
 }
@@ -153,7 +161,8 @@ export const handleImportList = (path: string) => {
   void importPlayList(path).then((skipTip) => {
     if (skipTip) return
     toast(global.i18n.t('setting_backup_part_import_list_tip_success'))
-  }).catch(() => {
+  }).catch((err) => {
+    log.error(err)
     toast(global.i18n.t('setting_backup_part_import_list_tip_error'))
   })
 }

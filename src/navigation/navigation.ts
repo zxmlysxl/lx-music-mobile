@@ -1,5 +1,5 @@
 import { Navigation } from 'react-native-navigation'
-import { InteractionManager } from 'react-native'
+// import { InteractionManager } from 'react-native'
 
 import {
   HOME_SCREEN,
@@ -13,6 +13,7 @@ import themeState from '@/store/theme/state'
 import { NAV_SHEAR_NATIVE_IDS } from '@/config/constant'
 import { getStatusBarStyle } from './utils'
 import { windowSizeTools } from '@/utils/windowSizeTools'
+import { type ListInfoItem } from '@/store/songlist/state'
 
 // const store = getStore()
 // const getTheme = () => getter('common', 'theme')(store.getState())
@@ -84,7 +85,7 @@ export async function pushHomeScreen() {
     },
   })
 }
-export function pushPlayDetailScreen(componentId: string) {
+export function pushPlayDetailScreen(componentId: string, skipAnimation = false) {
   /*
     Navigation.setDefaultOptions({
       topBar: {
@@ -117,7 +118,7 @@ export function pushPlayDetailScreen(componentId: string) {
       },
     })
   */
-  void InteractionManager.runAfterInteractions(() => {
+  requestAnimationFrame(() => {
     const theme = themeState.theme
 
     void Navigation.push(componentId, {
@@ -135,15 +136,15 @@ export function pushPlayDetailScreen(componentId: string) {
             style: getStatusBarStyle(theme.isDark),
             backgroundColor: 'transparent',
           },
-          // navigationBar: {
-          //   // visible: false,
-          //   backgroundColor: theme['c-content-background'],
-          // },
+          navigationBar: {
+            // visible: false,
+            backgroundColor: theme['c-content-background'],
+          },
           layout: {
             componentBackgroundColor: theme['c-content-background'],
           },
           animations: {
-            push: {
+            push: skipAnimation ? {} : {
               sharedElementTransitions: [
                 {
                   fromId: NAV_SHEAR_NATIVE_IDS.playDetail_pic,
@@ -159,17 +160,6 @@ export function pushPlayDetailScreen(componentId: string) {
                     duration: 300,
                   },
                   translationY: {
-                    from: -32, // Animate translationY from 16dp to 0dp
-                    duration: 300,
-                  },
-                },
-                {
-                  id: NAV_SHEAR_NATIVE_IDS.playDetail_pageIndicator,
-                  alpha: {
-                    from: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
-                    duration: 300,
-                  },
-                  translationX: {
                     from: -32, // Animate translationY from 16dp to 0dp
                     duration: 300,
                   },
@@ -209,13 +199,16 @@ export function pushPlayDetailScreen(componentId: string) {
     })
   })
 }
-export function pushSonglistDetailScreen(componentId: string, id: string) {
+export function pushSonglistDetailScreen(componentId: string, info: ListInfoItem) {
   const theme = themeState.theme
 
-  void InteractionManager.runAfterInteractions(() => {
+  requestAnimationFrame(() => {
     void Navigation.push(componentId, {
       component: {
         name: SONGLIST_DETAIL_SCREEN,
+        passProps: {
+          info,
+        },
         options: {
           topBar: {
             visible: false,
@@ -228,10 +221,10 @@ export function pushSonglistDetailScreen(componentId: string, id: string) {
             style: getStatusBarStyle(theme.isDark),
             backgroundColor: 'transparent',
           },
-          // navigationBar: {
-          //   // visible: false,
-          //   backgroundColor: theme['c-content-background'],
-          // },
+          navigationBar: {
+            // visible: false,
+            backgroundColor: theme['c-content-background'],
+          },
           layout: {
             componentBackgroundColor: theme['c-content-background'],
           },
@@ -239,8 +232,8 @@ export function pushSonglistDetailScreen(componentId: string, id: string) {
             push: {
               sharedElementTransitions: [
                 {
-                  fromId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_from_${id}`,
-                  toId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_to_${id}`,
+                  fromId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_from_${info.id}`,
+                  toId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_to_${info.id}`,
                   interpolation: { type: 'spring' },
                 },
               ],
@@ -278,8 +271,8 @@ export function pushSonglistDetailScreen(componentId: string, id: string) {
             pop: {
               sharedElementTransitions: [
                 {
-                  fromId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_to_${id}`,
-                  toId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_from_${id}`,
+                  fromId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_to_${info.id}`,
+                  toId: `${NAV_SHEAR_NATIVE_IDS.songlistDetail_pic}_from_${info.id}`,
                   interpolation: { type: 'spring' },
                 },
               ],
@@ -343,7 +336,7 @@ export function pushCommentScreen(componentId: string) {
       },
     })
   */
-  void InteractionManager.runAfterInteractions(() => {
+  requestAnimationFrame(() => {
     const theme = themeState.theme
 
     void Navigation.push(componentId, {
@@ -361,10 +354,10 @@ export function pushCommentScreen(componentId: string) {
             style: getStatusBarStyle(theme.isDark),
             backgroundColor: 'transparent',
           },
-          // navigationBar: {
-          //   // visible: false,
-          //   backgroundColor: theme['c-content-background'],
-          // },
+          navigationBar: {
+            // visible: false,
+            backgroundColor: theme['c-content-background'],
+          },
           layout: {
             componentBackgroundColor: theme['c-content-background'],
           },
@@ -427,7 +420,6 @@ export function pushCommentScreen(componentId: string) {
 //       },
 //     })
 //   */
-//   void InteractionManager.runAfterInteractions(() => {
 //     const theme = themeState.theme
 
 //     void Navigation.push(componentId, {
@@ -474,7 +466,6 @@ export function pushCommentScreen(componentId: string) {
 //           },
 //         },
 //       },
-//     })
 //   })
 // }
 
